@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class MontisoriCP {
     Scanner sc = new Scanner(System.in);
@@ -64,7 +65,9 @@ public class MontisoriCP {
                 throw new RuntimeException(e);
             }
         }
-        Integer key = MAIN_POOL.keySet().stream().findFirst().get();
+        UUID uuid = UUID.randomUUID(); // Generates a random UUID
+        Integer key = uuid.hashCode();
+        key =  MAIN_POOL.keySet().stream().findFirst().get();
         Connection connection = MAIN_POOL.get(key);
         MAIN_POOL.remove(key);
         CONSUMER_POOL.put(key, connection);
