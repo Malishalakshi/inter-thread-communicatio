@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MontisoriCP {
     Scanner sc = new Scanner(System.in);
@@ -36,17 +37,13 @@ public class MontisoriCP {
     private void initializePool() throws IOException, SQLException, ClassNotFoundException {
         Properties properties = new Properties();
         properties.load(getClass().getResourceAsStream("/application.properties"));
-        System.out.print("Enter pool size: ");
-        int poolSize= sc.nextInt();
-        if(poolSize<=0){
-            String DEFAULT_POOL_SIZE = properties.getProperty( "app.db.DEFAULT_POOL_SIZE" );
-            poolSize = Integer.parseInt(  DEFAULT_POOL_SIZE);
-        }
         String host = properties.getProperty("app.db.host");
         String port = properties.getProperty("app.db.port");
         String database = properties.getProperty("app.db.database");
         String user = properties.getProperty("app.db.user");
         String password = properties.getProperty("app.db.password");
+        String DEFAULT_POOL_SIZE1 = properties.getProperty( "app.db.DEFAULT_POOL_SIZE" );
+        DEFAULT_POOL_SIZE = Integer.parseInt( DEFAULT_POOL_SIZE1);
 
         Class.forName("com.mysql.cj.jdbc.Driver");
 
