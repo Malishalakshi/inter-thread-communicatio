@@ -6,10 +6,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class MontisoriCP {
-    private static final int DEFAULT_POOL_SIZE = 4;
-
+    Scanner sc = new Scanner(System.in);
+    private static int DEFAULT_POOL_SIZE;
     private final HashMap<Integer, Connection> MAIN_POOL = new HashMap<>();
     private final HashMap<Integer, Connection> CONSUMER_POOL = new HashMap<>();
     private final int poolSize;
@@ -34,7 +35,12 @@ public class MontisoriCP {
     private void initializePool() throws IOException, SQLException, ClassNotFoundException {
         Properties properties = new Properties();
         properties.load(getClass().getResourceAsStream("/application.properties"));
-
+        System.out.print("Enter pool size: ");
+        int poolSize= sc.nextInt();
+        if(poolSize<=0){
+            String DEFAULT_POOL_SIZE = properties.getProperty( "app.db.DEFAULT_POOL_SIZE" );
+            poolSize = Integer.parseInt(  DEFAULT_POOL_SIZE);
+        }
         String host = properties.getProperty("app.db.host");
         String port = properties.getProperty("app.db.port");
         String database = properties.getProperty("app.db.database");
